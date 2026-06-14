@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ps">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIA AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e3a8a,#312e81);
+    color:white;
+    min-height:100vh;
+}
+
+.header{
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(10px);
+    padding:18px;
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+}
+
+#chat{
+    height:75vh;
+    overflow-y:auto;
+    padding:15px;
+}
+
+.user{
+    background:#2563eb;
+    padding:12px;
+    margin:10px;
+    border-radius:15px 15px 0 15px;
+    text-align:right;
+}
+
+.ai{
+    background:#334155;
+    padding:12px;
+    margin:10px;
+    border-radius:15px 15px 15px 0;
+    text-align:left;
+}
+
+.bottom{
+    display:flex;
+    padding:10px;
+    background:rgba(255,255,255,.08);
+}
+
+input{
+    flex:1;
+    padding:14px;
+    border:none;
+    outline:none;
+    border-radius:30px;
+    font-size:16px;
+}
+
+button{
+    margin-left:10px;
+    padding:14px 20px;
+    border:none;
+    border-radius:30px;
+    background:#22c55e;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#16a34a;
+}
+</style>
+
+</head>
+<body>
+
+<div class="header">
+🤖 HIA AI
+</div>
+
+<div id="chat"></div>
+
+<div class="bottom">
+    <input
+        type="text"
+        id="message"
+        placeholder="خپل سوال ولیکئ..."
+    >
+    <button onclick="sendMessage()">
+        Send
+    </button>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
