@@ -5,86 +5,138 @@ const API_URL =
 
 const MODEL = "qwen-plus";
 
+async function typeWriter(element,text){
+
+    element.innerHTML="";
+
+    for(let i=0;i<text.length;i++){
+
+        element.innerHTML+=text.charAt(i);
+
+        chat.scrollTop=chat.scrollHeight;
+
+        await new Promise(r=>setTimeout(r,15));
+
+    }
+
+}
+
 async function sendMessage(){
 
-    let input = document.getElementById("message");
-    let text = input.value.trim();
+    let input=document.getElementById("message");
 
-    if(text === "") return;
+    let text=input.value.trim();
 
-    let chat = document.getElementById("chat");
+    if(text=="") return;
 
-    chat.innerHTML += `
+    let chat=document.getElementById("chat");
+
+    chat.innerHTML+=`
     <div class="user">
-        ${text}
+    ${text}
     </div>
     `;
 
-    input.value = "";
+    input.value="";
 
-    chat.innerHTML += `
+    chat.innerHTML+=`
     <div class="ai" id="loading">
-        AI لیکي...
+
+    <div class="typing">
+    <span></span>
+    <span></span>
+    <span></span>
+    </div>
+
     </div>
     `;
 
-    chat.scrollTop = chat.scrollHeight;
+    chat.scrollTop=chat.scrollHeight;
 
     try{
 
-        let response = await fetch(API_URL,{
+        let response=await fetch(API_URL,{
+
             method:"POST",
+
             headers:{
+
                 "Content-Type":"application/json",
-                "Authorization":"Bearer " + API_KEY
+
+                "Authorization":"Bearer "+API_KEY
+
             },
+
             body:JSON.stringify({
+
                 model:MODEL,
+
                 messages:[
+
                     {
                         role:"system",
-                        content:"You are a helpful AI assistant. Reply in Pashto when possible."
+                        content:"You are HIA AI. Reply in Pashto when possible."
                     },
+
                     {
                         role:"user",
                         content:text
                     }
+
                 ]
+
             })
+
         });
 
-        let data = await response.json();
+        let data=await response.json();
 
         document.getElementById("loading").remove();
 
-        let answer = data.choices[0].message.content;
+        let answer=data.choices[0].message.content;
 
-        chat.innerHTML += `
-        <div class="ai">
-            ${answer}
-        </div>
-        `;
+        let ai=document.createElement("div");
 
-        chat.scrollTop = chat.scrollHeight;
+        ai.className="ai";
 
-    }catch(e){
+        chat.appendChild(ai);
 
-        document.getElementById("loading").remove();
+        await typeWriter(ai,answer);
 
-        chat.innerHTML += `
-        <div class="ai">
-            Error: ${e.message}
-        </div>
-        `;
+        ai.innerHTML=marked.parse(answer);
+
+        chat.scrollTop=chat.scrollHeight;
+
     }
+
+    catch(e){
+
+        document.getElementById("loading").remove();
+
+        chat.innerHTML+=`
+
+        <div class="ai">
+
+        Error :
+
+        ${e.message}
+
+        </div>
+
+        `;
+
+    }
+
 }
 
 document
 .getElementById("message")
 .addEventListener("keypress",function(e){
 
-    if(e.key === "Enter"){
+    if(e.key=="Enter"){
+
         sendMessage();
+
     }
 
 });
